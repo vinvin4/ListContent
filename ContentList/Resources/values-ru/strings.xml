@@ -1,0 +1,22 @@
+<resources>
+	<string name="DetailsScreenTitle">Детали</string>
+	<string name="NameTitle">Имя</string>
+	<string name="AgeTitle">Возраст</string>
+	<string name="WantWorking">Хочу работать</string>
+	<string name="AnimalLenghtTitle">Длина животного</string>
+	<string name="AnimalWeightTitle">Вес животного</string>
+	<string name="LifespanTitle">Длительность жизни</string>
+	<string name="DurationTitle">Бодрствование</string>
+	<string name="DiurnalDuration">Дневной</string>
+	<string name="NocturnalDuration">Ночной</string>
+	<string name="DisplayDateTitle">Год презентации</string>
+	<string name="OriginPlaceTitle">Место презентации</string>
+
+	<string name="UpdateDialogMessage">Уже скачено: {0}</string>
+	<string name="UpdateDialogTitle">Скачивается..</string>
+
+	<string name="RedownloadContent">Вы можете докачать информацию. Начать?</string>
+	
+    <string name="app_name">ContentList</string>
+    <string name="action_settings">Settings</string>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+	<string name="DetailsScreenTitle">Details</string>
+	<string name="NameTitle">Name</string>
+	<string name="AgeTitle">Age</string>
+	<string name="WantWorking">Want to work</string>
+	<string name="AnimalLenghtTitle">Animal Lenght</string>
+	<string name="AnimalWeightTitle">Animal Weight</string>
+	<string name="LifespanTitle">Lifespan</string>
+	<string name="DurationTitle">Duration</string>
+	<string name="DiurnalDuration">Diurnal</string>
+	<string name="NocturnalDuration">Nocturnal</string>
+	<string name="DisplayDateTitle">Display Date</string>
+	<string name="OriginPlaceTitle">Origin Place</string>
+
+	<string name="UpdateDialogMessage">Already downloaded: {0}</string>
+	<string name="UpdateDialogTitle">Downloading..</string>
+
+	<string name="RedownloadContent">You can download more items. Start downloading?</string>
+	
+    <string name="app_name">ContentList</string>
+    <string name="action_settings">Settings</string>
+</resources>

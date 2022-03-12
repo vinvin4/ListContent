@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2c3e50</color>
+    <color name="colorPrimaryDark">#1B3147</color>
+    <color name="colorAccent">#3498db</color>
+
+	<color name="SelfItemColor">#ffe766</color>
+	<!--RGBA (255,215,0,0.6)-->
+	
+	<color name="AnimeItemColor">#ea728a</color>
+	<!--RGBA (220,20,60,0.6)-->
+
+	<color name="ZooItemColor">#66b366</color>
+	<!--RGBA(0,128,0,0.6)-->
+
+	<color name="MuseumItemColor">#66d9ff</color>
+	<!--RGBA(0,191,255,0.6)-->
+</resources>

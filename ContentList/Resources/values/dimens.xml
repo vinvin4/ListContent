@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+	<dimen name="emptyDimen">0dp</dimen>
+	<dimen name="imageSize">80dp</dimen>
+
+	<dimen name="imageMargin">3dp</dimen>
+	<dimen name="imageElevation">12dp</dimen>
+
+	<dimen name="detailsTextSize">24sp</dimen>
+
+	<dimen name="listViewMargin">35dp</dimen>
+</resources>

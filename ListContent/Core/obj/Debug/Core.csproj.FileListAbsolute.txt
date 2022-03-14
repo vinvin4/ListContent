@@ -1,0 +1,7 @@
+D:\СПб_Проект\ListContent\ListContent\Core\bin\Debug\Core.dll.config
+D:\СПб_Проект\ListContent\ListContent\Core\bin\Debug\Core.dll
+D:\СПб_Проект\ListContent\ListContent\Core\bin\Debug\Core.pdb
+D:\СПб_Проект\ListContent\ListContent\Core\obj\Debug\Core.csproj.AssemblyReference.cache
+D:\СПб_Проект\ListContent\ListContent\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache
+D:\СПб_Проект\ListContent\ListContent\Core\obj\Debug\Core.dll
+D:\СПб_Проект\ListContent\ListContent\Core\obj\Debug\Core.pdb

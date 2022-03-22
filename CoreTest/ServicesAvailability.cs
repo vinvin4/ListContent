@@ -1,7 +1,8 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="ServicesAvailability.cs" />
 // -----------------------------------------------------------------------
-using Core;
+using Core.Services;
+
 using System.Linq;
 using Xunit;
 
@@ -26,7 +27,7 @@ namespace CoreTest
         [Fact]
         public async void AnimeServiceAvailability()
         {
-            var listResult = await new AnimeService().GetContentList();
+            var listResult = await new AnimeService(true).GetContentList();
             bool testResult = listResult?.Any() ?? false;
             Assert.True(testResult, "Anime Service does not return any content");
         }

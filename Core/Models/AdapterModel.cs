@@ -1,13 +1,15 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="AdapterModel.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
+using Core.Utilities;
+
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    public class AdapterModel : IClonableModel
+    public class AdapterModel : AbstractClonableModel
     {
         /// <summary>
         /// Title of item
@@ -45,15 +47,22 @@ namespace Core.Models
         /// <returns></returns>
         public async Task InitializeImageArray()
         {
-            HttpResponseMessage httpResponseMessage = null;
-            using (HttpClient client = new HttpClient())
+            if (!string.IsNullOrEmpty(ImageUrl))
             {
-                client.Timeout = new System.TimeSpan(0, 0, 15);
-                httpResponseMessage = await client.GetAsync(ImageUrl);
-                if (httpResponseMessage?.IsSuccessStatusCode ?? false)
+                HttpResponseMessage httpResponseMessage = null;
+                using (HttpClient client = new HttpClient())
                 {
-                    Image = await httpResponseMessage.Content.ReadAsByteArrayAsync();
+                    client.Timeout = Constants.ClientTimeout;
+                    httpResponseMessage = await client.GetAsync(ImageUrl);
+                    if (httpResponseMessage?.IsSuccessStatusCode ?? false)
+                    {
+                        Image = await httpResponseMessage.Content.ReadAsByteArrayAsync();
+                    }
                 }
+            }
+            else if (ModelType != (int)EnumUtils.ModelType.Self)
+            {
+                Utilities.Utilities.LogMessage($"ImageUrl is null or empty. Verify, what is happen. Type: {ModelType}, Title: {Title}");
             }
         }
     }

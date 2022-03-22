@@ -1,23 +1,30 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="AnimeDetailsFragment.cs" />
 // -----------------------------------------------------------------------
+using Android.OS;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace ContentList
+namespace ContentList.Android.Fragments
 {
     public class AnimeDetailsFragment : BaseFragment
     {
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            TAG = nameof(AnimeDetailsFragment);
+        }
+
         /// <summary>
         /// Initialize view
         /// </summary>
-        public override void InitializeView()
+        protected override void InitializeView()
         {
-            base.InitializeView();
-            List<string> facts = JsonConvert.DeserializeObject<List<string>>(Details);
+            var facts = JsonConvert.DeserializeObject<List<string>>(Details);
             for(int i = 0; i < facts.Count; i++)
             {
-                container.AddView(new DescritionView(ParentActivity, $"{i+1}.", facts[i]).GetView());
+                container.AddView(new DescritionView(ParentActivity, Resource.Layout.t_list_container,
+                    $"{i+1}.", facts[i]).GetView());
             }
         }
     }

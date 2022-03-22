@@ -1,30 +1,16 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="SelfDetailsFragment.cs" />
 // -----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
+using Android.OS;
 
-namespace ContentList
+namespace ContentList.Android.Fragments
 {
     public class SelfDetailsFragment : BaseFragment
     {
-        /// <summary>
-        /// Initialize view
-        /// </summary>
-        public override void InitializeView()
+        public override void OnCreate(Bundle savedInstanceState)
         {
-            base.InitializeView();
-            Dictionary<string, string> contentDictionary = new Dictionary<string, string>()
-            {
-                {GetString(Resource.String.NameTitle), "Ivan" },
-                { GetString(Resource.String.AgeTitle), "23"},
-                {GetString(Resource.String.WantWorking), bool.TrueString }
-            };
-
-            foreach (KeyValuePair<string,string> item in contentDictionary.AsEnumerable())
-            {
-                container.AddView(new DescritionView(ParentActivity, item.Key, item.Value).GetView());
-            }
+            base.OnCreate(savedInstanceState);
+            TAG = nameof(SelfDetailsFragment);
         }
     }
 }

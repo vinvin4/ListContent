@@ -4,14 +4,16 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Fragment = AndroidX.Fragment.App.Fragment;
+using Android.Content.PM;
 using AndroidX.AppCompat.App;
-using Core.Utilities;
 
-namespace ContentList
+using Core.Utilities;
+using ContentList.Android.Fragments;
+
+namespace ContentList.Android.Activities
 {
-    [Activity(Label = "DetailsActivity",
-        ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/DetailsScreenTitle",
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class DetailsActivity : AppCompatActivity
     {
         public const string TypeExtra = "sample.Type";
@@ -27,35 +29,27 @@ namespace ContentList
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.a_details);
 
-            int contentType = Intent.GetIntExtra(TypeExtra, 0);
-            string contentDetails = Intent.GetStringExtra(DetailsExtra);
+            var contentType = Intent.GetIntExtra(TypeExtra, 0);
+            var contentDetails = Intent.GetStringExtra(DetailsExtra);
 
-            Fragment fragment = new Fragment();
+            var fragment = new BaseFragment();
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             switch((EnumUtils.ModelType)contentType)
             {
                 case EnumUtils.ModelType.ZooAnimal:
-                    fragment = new ZooFragmentDetails()
-                    {
-                        Details = contentDetails
-                    };
+                    fragment = new ZooFragmentDetails();
                     break;
                 case EnumUtils.ModelType.Anime:
-                    fragment = new AnimeDetailsFragment()
-                    {
-                        Details = contentDetails
-                    };
+                    fragment = new AnimeDetailsFragment();
                     break;
                 case EnumUtils.ModelType.Museum:
-                    fragment = new MuseumDetailsFragment()
-                    {
-                        Details = contentDetails
-                    };
+                    fragment = new MuseumDetailsFragment();
                     break;
                 case EnumUtils.ModelType.Self:
                     fragment = new SelfDetailsFragment();
                     break;
             }
+            fragment.Details = contentDetails;
             fragmentTransaction.Replace(Resource.Id.container, fragment);
             fragmentTransaction.Commit();
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IContentService
+    internal interface IContentService
     {
         /// <summary>
         /// Get Content API for all services

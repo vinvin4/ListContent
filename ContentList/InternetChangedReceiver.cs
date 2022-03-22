@@ -5,7 +5,7 @@ using Android.Content;
 using Android.Net;
 using System;
 
-namespace ContentList
+namespace ContentList.Android
 {
     [BroadcastReceiver]
     public class InternetChangedReceiver : BroadcastReceiver
@@ -24,8 +24,9 @@ namespace ContentList
 
         public override void OnReceive(Context context, Intent intent)
         {
-            ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
+            var connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
             var networkInfo = connectivityManager.ActiveNetworkInfo;
+            
             if (networkInfo != null)
             {
                 InternetStatusChanged?.Invoke(this, true);

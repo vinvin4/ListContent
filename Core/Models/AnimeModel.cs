@@ -1,8 +1,9 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="AnimeModel.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Utilities;
+
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Core.Models
         public string Name { get; set; }
     }
 
-    public class AnimeFactModel : IClonableModel
+    public class AnimeFactModel : AbstractClonableModel
     {
         [JsonProperty("success")]
         public string IsSuccess { get; set; }

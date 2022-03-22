@@ -1,17 +1,17 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="SelfService.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Models;
 using Core.Utilities;
+
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core
+namespace Core.Services
 {
-    // Implemented anti-pattern "Hardcode";
-    // But, it's for joke aim, not as real
-    public class SelfService : IAbstractContentService
+    public class SelfService : AbstractContentService
     {
         #region Constructors
         /// <summary>
@@ -27,10 +27,7 @@ namespace Core
         /// Handle responce from Initialize Model request
         /// </summary>
         /// <param name="content"></param>
-        protected override Task HandleResponse(string content)
-        {
-            return Task.CompletedTask;
-        }
+        protected override Task HandleResponse(string content) => Task.CompletedTask;
 
         /// <summary>
         /// Abstract function to get content
@@ -39,44 +36,32 @@ namespace Core
         /// <returns>List of models to use</returns>
         protected override List<AdapterModel> GetContent()
         {
+            var factDetails = new Dictionary<string, string>()
+            {
+                {DetailsResources.NameTitle, "Ivan" },
+                {DetailsResources.SelfAgeTitle, "23" },
+                {DetailsResources.SelfWantWorkTitle, bool.TrueString },
+                {DetailsResources.SelfFavoriteAuthorTitle, "Данияр Сугралинов" }
+            };
             return new List<AdapterModel>()
             {
                 new AdapterModel()
                 {
-                    Title = "It is me!",
-                    Details = string.Empty,
+                    Title = DetailsResources.SelfDetailsTitle,
+                    Details = JsonConvert.SerializeObject(factDetails),
                     ImageUrl = string.Empty,
                     ModelType = (int)EnumUtils.ModelType.Self
                 }
             };
         }
-
-        /// <summary>
-        /// Clean duplicates from received information
-        /// </summary>
-        protected override void CleanDublicates()
-        {
-        }
         #endregion
 
         #region Overridables
         /// <summary>
-        /// Prepare content, receive byte array for image
-        /// </summary>
-        /// <returns></returns>
-        protected override Task<List<AdapterModel>> GetPreparedContent()
-        {
-            return Task.FromResult(GetContent());
-        }        
-
-        /// <summary>
         /// Public API to prepare local data
         /// </summary>
         /// <returns></returns>
-        protected override Task<bool> InitializeModels()
-        {
-            return Task.FromResult(true);
-        }
+        protected override Task<bool> InitializeModels() => Task.FromResult(true);
         #endregion
     }
 }

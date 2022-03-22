@@ -1,16 +1,17 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="MuseumService.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Models;
+
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core
+namespace Core.Services
 {
-    public class MuseumService : IAbstractContentService
+    public class MuseumService : AbstractContentService
     {
         #region Private properties
         private const string url = "https://api.artic.edu/api/v1/artworks?fields=id,title,date_display,image_id,place_of_origin&limit=10&page=";
@@ -57,7 +58,7 @@ namespace Core
         /// <param name="content"></param>
         protected override Task HandleResponse(string content)
         {
-            List<MuseumItem> details = JsonConvert.DeserializeObject<MuseumModel>(content).Data;
+            var details = JsonConvert.DeserializeObject<MuseumModel>(content).Data;
             models.AddRange(details);
             return Task.CompletedTask;
         }

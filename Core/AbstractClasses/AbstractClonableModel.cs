@@ -1,22 +1,28 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="IClonableModel.cs" />
 // -----------------------------------------------------------------------
+using Core.Interfaces;
 using Core.Models;
 
-namespace Core.Interfaces
+using Newtonsoft.Json;
+
+namespace Core.AbstractClasses
 {
-    internal interface IClonableModel
+    public abstract class AbstractClonableModel : IClonableModel
     {
         /// <summary>
-        /// ToString overriding for model
+        /// Override <code>Object.ToString()</code> method for models
         /// </summary>
-        /// <returns>String-equivalent of model</returns>
-        string ToString();
+        /// <returns>JSON equivalent of received data</returns>
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
 
         /// <summary>
         /// Convert existing model to form, usable in platform implementation
         /// </summary>
         /// <returns>Adapter model, that is available for working on platform side</returns>
-        AdapterModel ConvertToWorkingModel();
+        public abstract AdapterModel ConvertToWorkingModel();
     }
 }

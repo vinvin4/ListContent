@@ -5,16 +5,25 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Fragment = AndroidX.Fragment.App.Fragment;
 
-namespace ContentList
+using ContentList.Android.Activities;
+using Fragment = AndroidX.Fragment.App.Fragment;
+using Newtonsoft.Json;
+
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ContentList.Android.Fragments
 {
     public class BaseFragment : Fragment
     {
+        protected string TAG = nameof(BaseFragment);
+        protected LinearLayout container;
+
         /// <summary>
         /// Parent activity
         /// </summary>
-        public DetailsActivity ParentActivity
+        protected DetailsActivity ParentActivity
         {
             get
             {
@@ -27,8 +36,6 @@ namespace ContentList
         /// </summary>
         public string Details { get; set; }
 
-        protected LinearLayout container;
-
         /// <summary>
         /// Creates and returns the view hierarchy associated with the fragment.
         /// </summary>
@@ -38,7 +45,7 @@ namespace ContentList
         /// <returns>View for the fragment's UI, or nul.</returns>
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.f_self_details, container, false);
+            return inflater.Inflate(Resource.Layout.f_base_container, container, false);
         }
 
         /// <summary>
@@ -48,34 +55,58 @@ namespace ContentList
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
+            container = View.FindViewById<LinearLayout>(Resource.Id.contentContainer);
             InitializeView();
         }
 
         /// <summary>
         /// Initialize view
         /// </summary>
-        public virtual void InitializeView()
+        protected virtual void InitializeView()
         {
-            container = View.FindViewById<LinearLayout>(Resource.Id.contentContainer);
+            var factsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Details);
+
+            foreach (KeyValuePair<string, string> item in factsDictionary.AsEnumerable())
+            {
+                container.AddView(new DescritionView(ParentActivity, item.Key, item.Value).GetView());
+            }
         }
 
         /// <summary>
         /// Local class to visualize information
         /// </summary>
-        public class DescritionView
+        protected class DescritionView
         {
-            private LinearLayout container;
+            private readonly LinearLayout container;
+
+            #region Constructors
+            /// <summary>
+            /// Initialize new instance of <see cref="DescritionView"/>
+            /// </summary>
+            /// <param name="context">Current context</param>
+            /// <param name="title">Fact title</param>
+            /// <param name="value">Fact value</param>
             public DescritionView(Context context, string title, string value)
+                : this(context, Resource.Layout.t_details_fact, title, value)
             {
-                container = (LinearLayout)LayoutInflater.From(context).Inflate(Resource.Layout.t_details_fact, null);
+            }
+
+            /// <summary>
+            /// Initialize new instance of <see cref="DescritionView"/>
+            /// </summary>
+            /// <param name="context">Current context</param>
+            /// <param name="layoutId">layout ID</param>
+            /// <param name="title">Fact title</param>
+            /// <param name="value">Fact Value</param>
+            public DescritionView(Context context, int layoutId, string title, string value)
+            {
+                container = (LinearLayout)LayoutInflater.From(context).Inflate(layoutId, null);
                 container.FindViewById<TextView>(Resource.Id.titleTV).Text = title;
                 container.FindViewById<TextView>(Resource.Id.contentTV).Text = value;
             }
+            #endregion
 
-            public View GetView()
-            {
-                return container;
-            }
+            public View GetView() => container;
         }
     }
 }

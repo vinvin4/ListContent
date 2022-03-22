@@ -1,7 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="IAbstractContentService.cs" />
 // -----------------------------------------------------------------------
+using Core.Interfaces;
 using Core.Models;
+using Core.Utilities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +12,24 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Core.AbstractClasses
 {
-    public abstract class IAbstractContentService : IContentService
+    public abstract class AbstractContentService : IContentService
     {
         #region Private Properties
-        private string requestUrl = string.Empty;
+        private readonly string requestUrl = string.Empty;
+        private readonly int sessionId;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialize new instance of <see cref="IAbstractContentService"/>
+        /// Initialize new instance of <see cref="AbstractContentService"/>
         /// </summary>
         /// <param name="url">Request URL to call</param>
-        public IAbstractContentService(string url)
+        public AbstractContentService(string url)
         {
             this.requestUrl = url;
+            sessionId = new Random().Next(1, 9999);
         }
         #endregion
 
@@ -45,19 +50,10 @@ namespace Core.Interfaces
         /// <summary>
         /// Clean duplicates from received information
         /// </summary>
-        protected abstract void CleanDublicates();
-        #endregion
-
-        /// <summary>
-        /// Prepare content, receive byte array for image
-        /// </summary>
-        /// <returns></returns>
-        protected virtual async Task<List<AdapterModel>> GetPreparedContent()
+        protected virtual void CleanDublicates()
         {
-            List<AdapterModel> models = GetContent();
-            await Task.WhenAll(models.Select(item => item.InitializeImageArray()));
-            return models;
         }
+        #endregion
 
         /// <summary>
         /// Public API to prepare local data
@@ -69,13 +65,15 @@ namespace Core.Interfaces
             var httpResponse = await GetResponseMessage();
             if (httpResponse?.IsSuccessStatusCode ?? false)
             {
-                string content = await httpResponse.Content.ReadAsStringAsync();
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                Utilities.Utilities.LogMessage(content, Constants.RESPONSE);
                 await HandleResponse(content);
             }
             else
             {
                 flowResult = false;
-                Console.WriteLine($"Incorrect status code: {httpResponse.StatusCode}; InitializeModels");
+                Utilities.Utilities.LogMessage($"Incorrect status code: {httpResponse.StatusCode}; InitializeModels",
+                    Constants.EXCEPTION);
             }
             return flowResult;
         }
@@ -89,14 +87,20 @@ namespace Core.Interfaces
             List<AdapterModel> returnValue = null;
             if (await InitializeModels())
             {
-                returnValue = await GetPreparedContent();
+                returnValue = GetContent();
+                await Task.WhenAll(returnValue.Select(item => item.InitializeImageArray()));
             }
             else
             {
-                new List<AdapterModel>();
+                returnValue = new List<AdapterModel>();
             }                
             return returnValue;
         }
+
+        /// <summary>
+        /// Session ID property. Added to clear initialize instance of service
+        /// </summary>
+        public int SessionId => sessionId;
 
         #region Private Methods
         /// <summary>
@@ -109,18 +113,20 @@ namespace Core.Interfaces
             using (HttpClient client = new HttpClient())
             {
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-                client.Timeout = new TimeSpan(0, 0, 15);
+                client.Timeout = Constants.ClientTimeout;
                 try
                 {
                     message = await client.GetAsync(requestUrl).ConfigureAwait(false);
                 }
                 catch (HttpRequestException ex)
                 {
-                    Console.WriteLine($"HttpRequestException: {ex.Message}; IAbstractContentService.GetResponseMessage");
+                    Utilities.Utilities.LogMessage($"HttpRequestException: {ex.Message}; IAbstractContentService.GetResponseMessage",
+                        Constants.EXCEPTION);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Exception: {e.Message}; IAbstractContentService.GetResponseMessage");
+                    Utilities.Utilities.LogMessage($"Exception: {e.Message}; IAbstractContentService.GetResponseMessage",
+                        Constants.EXCEPTION);
                 }
             }
             return message;

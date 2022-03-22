@@ -1,30 +1,32 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="AnimeService.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Models;
+
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core
+namespace Core.Services
 {
-    public class AnimeService : IAbstractContentService
+    public class AnimeService : AbstractContentService
     {
         #region Private properties
         private const string url = "https://anime-facts-rest-api.herokuapp.com/api/v1";
-        private const string mockUrl = "https://anime-facts-rest-api.herokuapp.com/api/v1";
         private List<AdapterModel> models = null;
+        private readonly bool isMock = false;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Initialize new isntance of <see cref="AnimeService"/>
         /// </summary>
-        public AnimeService() : base(url)
+        public AnimeService(bool isMock = false) : base(url)
         {
             models = new List<AdapterModel>();
+            this.isMock = isMock;
         }
         #endregion
 
@@ -50,6 +52,10 @@ namespace Core
                 .Select(item => item.Name)
                 .Select(name => new AnimeFactService(name))
                 .ToList();
+            if (isMock)
+            {
+                animeServices = new List<AnimeFactService>() { animeServices.First() }; 
+            }
             foreach (var animeItem in animeServices)
             {
                 models.AddRange(await animeItem.GetContentList());
@@ -71,7 +77,7 @@ namespace Core
         /// <summary>
         /// Lical class to fetch anime facts
         /// </summary>
-        private class AnimeFactService : IAbstractContentService
+        private class AnimeFactService : AbstractContentService
         {
             #region Private properties
             private string animeName = string.Empty;
@@ -105,13 +111,6 @@ namespace Core
                     outputResult.Add(model);
                 }                
                 return outputResult; 
-            }
-
-            /// <summary>
-            /// Clean duplicates from received information
-            /// </summary>
-            protected override void CleanDublicates()
-            {
             }
 
             /// <summary>

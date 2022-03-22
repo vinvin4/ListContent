@@ -1,32 +1,16 @@
 ﻿//-----------------------------------------------------------------------
 //  <copyright file="MuseumDetailsFragment.cs" />
 // -----------------------------------------------------------------------
-using Core.Models;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
+using Android.OS;
 
-namespace ContentList
+namespace ContentList.Android.Fragments
 {
     public class MuseumDetailsFragment : BaseFragment
     {
-        /// <summary>
-        /// Initialize view
-        /// </summary>
-        public override void InitializeView()
+        public override void OnCreate(Bundle savedInstanceState)
         {
-            base.InitializeView();
-            MuseumItemDetails facts = JsonConvert.DeserializeObject<MuseumItemDetails>(Details);
-            Dictionary<string, string> factsDictionary = new Dictionary<string, string>()
-            {
-                {GetString(Resource.String.DisplayDateTitle), facts.DisplayDate },
-                {GetString(Resource.String.OriginPlaceTitle), facts.OriginPlace }
-            };
-
-            foreach (KeyValuePair<string, string> item in factsDictionary.AsEnumerable())
-            {
-                container.AddView(new DescritionView(ParentActivity, item.Key, item.Value).GetView());
-            }
+            base.OnCreate(savedInstanceState);
+            TAG = nameof(MuseumDetailsFragment);
         }
     }
 }

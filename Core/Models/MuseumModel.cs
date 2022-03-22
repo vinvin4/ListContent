@@ -1,8 +1,9 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="MuseumModel.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Utilities;
+
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Core.Models
         public List<MuseumItem> Data { get; set; }
     }
 
-    public class MuseumItem : IClonableModel
+    public class MuseumItem : AbstractClonableModel
     {
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -27,36 +28,18 @@ namespace Core.Models
 
         public override AdapterModel ConvertToWorkingModel()
         {
-            var details = new MuseumItemDetails()
+            var details = new Dictionary<string, string>()
             {
-                DisplayDate = DisplayDate,
-                OriginPlace = OriginPlace
+                {DetailsResources.DisplayDateTitle, DisplayDate },
+                {DetailsResources.OriginPlaceTitle, OriginPlace }
             };
             return new AdapterModel()
             {
                 Title = Title,
                 ModelType = (int)EnumUtils.ModelType.Museum,
                 ImageUrl = string.Format("https://www.artic.edu/iiif/2/{0}/full/843,/0/default.jpg", ImageId),
-                Details = details.ToString()
+                Details = JsonConvert.SerializeObject(details)
             };
-        }
-    }
-
-    public class MuseumItemDetails : IClonableModel
-    {
-        /// <summary>
-        /// Date, when art was presented
-        /// </summary>
-        public string DisplayDate { get; set; }
-
-        /// <summary>
-        /// Place, where art was presented
-        /// </summary>
-        public string OriginPlace { get; set; }
-
-        public override AdapterModel ConvertToWorkingModel()
-        {
-            return null;
         }
     }
 }

@@ -1,24 +1,8 @@
 build
 .vs
-*xcodeproj/*mode*
-*xcodeproj/*pbxuser
-*xcodeproj/*per*
-*xcodeproj/project.xcworkspace
-*xcodeproj/xcuserdata
-*xcworkspace/xcuserdata
 **/ContentList.csproj.user
 
 **/build
-**/*xcodeproj/*mode*
-**/*xcodeproj/*pbxuser
-**/*xcodeproj/*per*
-**/*xcodeproj/project.xcworkspace
-**/*xcodeproj/xcuserdata
-**/**/*xcodeproj/*mode*
-**/**/*xcodeproj/*pbxuser
-**/**/*xcodeproj/*per*
-**/**/*xcodeproj/project.xcworkspace
-**/**/*xcodeproj/xcuserdata
 
 *tmproj
 **/~*
@@ -35,5 +19,4 @@ Resource.designer.cs
 
 **/*.so
 
-packages/
 .idea/

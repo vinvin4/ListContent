@@ -1,16 +1,17 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="ZooAnimalsService.cs" />
 // -----------------------------------------------------------------------
-using Core.Interfaces;
+using Core.AbstractClasses;
 using Core.Models;
+
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core
+namespace Core.Services
 {
-    public class ZooAnimalsService : IAbstractContentService
+    public class ZooAnimalsService : AbstractContentService
     {
         #region Properties
         private const string url = "https://zoo-animal-api.herokuapp.com/animals/rand/";
